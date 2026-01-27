@@ -32,9 +32,6 @@ export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
     extrapolateRight: "clamp",
   });
 
-  // No rotation - keep content front and center for CTA focus
-  const rotateY = 0;
-
   const sidebarSlide = spring({
     frame,
     fps,
@@ -83,6 +80,17 @@ export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
   // CTA timing - appears after all commits have shown
   const lastCommitEnd = INTRO_DELAY + (allCommits.length - 1) * COMMIT_INTERVAL + 45;
   const ctaStartFrame = lastCommitEnd + 30;
+
+  // Y-axis rotation: pan 11 to -11 during commits, then snap to 0 for CTA
+  const rotateY = frame < ctaStartFrame
+    ? interpolate(frame, [0, ctaStartFrame], [11, -11], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      })
+    : interpolate(frame, [ctaStartFrame, ctaStartFrame + 15], [-11, 0], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      });
 
   const ctaOpacity = interpolate(frame, [ctaStartFrame, ctaStartFrame + 20], [0, 1], {
     extrapolateLeft: "clamp",
