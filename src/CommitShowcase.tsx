@@ -32,11 +32,8 @@ export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
     extrapolateRight: "clamp",
   });
 
-  // Y-axis rotation from 11 to -11 degrees over total duration
-  const rotateY = interpolate(frame, [0, durationInFrames], [11, -11], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  // No rotation - keep content front and center for CTA focus
+  const rotateY = 0;
 
   const sidebarSlide = spring({
     frame,
