@@ -11,6 +11,9 @@ importers:
       '@remotion/cli':
         specifier: ^4.0.0
         version: 4.0.410(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@remotion/media':
+        specifier: 4.0.410
+        version: 4.0.410(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@remotion/transitions':
         specifier: ^4.0.0
         version: 4.0.410(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -272,6 +275,12 @@ packages:
 
   '@remotion/media-utils@4.0.410':
     resolution: {integrity: sha512-jrgB3QFgLhELbVq+XNQoYraA4ofCIVaJron2KShSBdPNbkRTg2w0wCjA2gLFTdBacLSGS9N7I4Ft/qA1tpz96w==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
+  '@remotion/media@4.0.410':
+    resolution: {integrity: sha512-kJp8ubC/ZtLuqNWXS084ZZX+Vv1PaeWmE5ze2q9P7Z5GmxadI31Y9BgQQDsUPjVSoGGGIAQQPgmzUoZi2YpWuQ==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -1108,14 +1117,14 @@ snapshots:
       '@remotion/media-parser': 4.0.410
       '@remotion/studio': 4.0.410(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@remotion/studio-shared': 4.0.410(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      css-loader: 5.2.7(webpack@5.96.1)
+      css-loader: 5.2.7(webpack@5.96.1(esbuild@0.25.0))
       esbuild: 0.25.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-refresh: 0.9.0
       remotion: 4.0.410(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       source-map: 0.7.3
-      style-loader: 4.0.0(webpack@5.96.1)
+      style-loader: 4.0.0(webpack@5.96.1(esbuild@0.25.0))
       webpack: 5.96.1(esbuild@0.25.0)
     transitivePeerDependencies:
       - '@swc/core'
@@ -1177,6 +1186,13 @@ snapshots:
     dependencies:
       '@remotion/media-parser': 4.0.410
       '@remotion/webcodecs': 4.0.410
+      mediabunny: 1.29.0
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      remotion: 4.0.410(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+
+  '@remotion/media@4.0.410(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
       mediabunny: 1.29.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -1478,7 +1494,7 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  css-loader@5.2.7(webpack@5.96.1):
+  css-loader@5.2.7(webpack@5.96.1(esbuild@0.25.0)):
     dependencies:
       icss-utils: 5.1.0(postcss@8.5.6)
       loader-utils: 2.0.4
@@ -1850,7 +1866,7 @@ snapshots:
 
   strip-final-newline@2.0.0: {}
 
-  style-loader@4.0.0(webpack@5.96.1):
+  style-loader@4.0.0(webpack@5.96.1(esbuild@0.25.0)):
     dependencies:
       webpack: 5.96.1(esbuild@0.25.0)
 

@@ -1,4 +1,5 @@
-import { useCurrentFrame, useVideoConfig, spring, interpolate, Img, staticFile } from "remotion";
+import { useCurrentFrame, useVideoConfig, spring, interpolate, Img, staticFile, Sequence } from "remotion";
+import { Audio } from "@remotion/media";
 import { CommitMessage } from "./components/CommitMessage";
 
 const BRAND_COLOR = "#345A5D";
@@ -489,6 +490,31 @@ export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
           </div>
         </div>
       )}
+
+      {/* Audio - Background Music */}
+      <Audio
+        src={staticFile("audio/background-music.mp3")}
+        volume={(f) =>
+          f < ctaStartFrame - INTRO_DELAY
+            ? 0.3
+            : interpolate(f, [ctaStartFrame - INTRO_DELAY, ctaStartFrame - INTRO_DELAY + 30], [0.3, 0.1], {
+                extrapolateRight: "clamp",
+              })
+        }
+        loop
+      />
+
+      {/* Audio - Commit Pop Sound Effects */}
+      {allCommits.map((commit, index) => (
+        <Sequence key={`sfx-${commit.hash}`} from={INTRO_DELAY + index * COMMIT_INTERVAL}>
+          <Audio src={staticFile("audio/commit-pop.mp3")} volume={0.5} />
+        </Sequence>
+      ))}
+
+      {/* Audio - CTA Whoosh Sound */}
+      <Sequence from={ctaStartFrame}>
+        <Audio src={staticFile("audio/cta-whoosh.mp3")} volume={0.7} />
+      </Sequence>
       </div>
     </div>
   );
