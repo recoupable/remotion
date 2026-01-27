@@ -22,6 +22,10 @@ const typeColors: Record<string, string> = {
 const repoColors: Record<string, string> = {
   "Recoup-Chat": "#2563EB",
   "Recoup-API": "#7C3AED",
+  "Recoup-Supabase": "#3ECF8E",
+  "Recoup-Docs": "#0D9373",
+  "Recoup-Remotion": "#E11D48",
+  "Recoup-Monorepo": "#345A5D",
 };
 
 export const CommitMessage: React.FC<CommitMessageProps> = ({
@@ -83,7 +87,7 @@ export const CommitMessage: React.FC<CommitMessageProps> = ({
         }}
       >
         <span style={{ color: "white", fontSize: 14, fontWeight: 600 }}>
-          {repo === "Recoup-Chat" ? "C" : "A"}
+          {repo.replace("Recoup-", "").charAt(0)}
         </span>
       </div>
 
