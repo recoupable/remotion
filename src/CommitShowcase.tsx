@@ -32,8 +32,8 @@ export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
     extrapolateRight: "clamp",
   });
 
-  // Y-axis rotation from 10 to -10 degrees over total duration
-  const rotateY = interpolate(frame, [0, durationInFrames], [10, -10], {
+  // Y-axis rotation from 11 to -11 degrees over total duration
+  const rotateY = interpolate(frame, [0, durationInFrames], [11, -11], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
