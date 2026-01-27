@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { Sequence, useVideoConfig, delayRender, continueRender } from "remotion";
+import { Sequence, useVideoConfig, delayRender, continueRender, interpolate } from "remotion";
 import { Audio } from "@remotion/media";
-import { audioBufferToDataUrl } from "@remotion/media-utils";
-import { interpolate } from "remotion";
+import { generatePopTone } from "../lib/audio/generatePopTone";
+import { generateWhooshTone } from "../lib/audio/generateWhooshTone";
+import { generateAmbientTone } from "../lib/audio/generateAmbientTone";
 
 interface CommitShowcaseAudioProps {
   commits: { hash: string }[];
@@ -11,111 +12,6 @@ interface CommitShowcaseAudioProps {
   commitInterval: number;
   enableBackgroundMusic?: boolean;
 }
-
-const SAMPLE_RATE = 44100;
-
-// Generate a short "pop" tone for commit appearances
-const generatePopTone = async (): Promise<string> => {
-  const duration = 0.08; // 80ms
-  const offlineContext = new OfflineAudioContext({
-    numberOfChannels: 2,
-    length: SAMPLE_RATE * duration,
-    sampleRate: SAMPLE_RATE,
-  });
-
-  const oscillator = offlineContext.createOscillator();
-  const gainNode = offlineContext.createGain();
-
-  oscillator.connect(gainNode);
-  gainNode.connect(offlineContext.destination);
-
-  oscillator.type = "sine";
-  oscillator.frequency.setValueAtTime(880, 0); // A5
-  oscillator.frequency.exponentialRampToValueAtTime(440, duration); // Drop to A4
-
-  gainNode.gain.setValueAtTime(0.4, 0);
-  gainNode.gain.exponentialRampToValueAtTime(0.01, duration);
-
-  oscillator.start(0);
-  oscillator.stop(duration);
-
-  const buffer = await offlineContext.startRendering();
-  return audioBufferToDataUrl(buffer);
-};
-
-// Generate a whoosh/sweep for CTA reveal
-const generateWhooshTone = async (): Promise<string> => {
-  const duration = 0.5; // 500ms
-  const offlineContext = new OfflineAudioContext({
-    numberOfChannels: 2,
-    length: SAMPLE_RATE * duration,
-    sampleRate: SAMPLE_RATE,
-  });
-
-  const oscillator = offlineContext.createOscillator();
-  const gainNode = offlineContext.createGain();
-  const filterNode = offlineContext.createBiquadFilter();
-
-  oscillator.connect(filterNode);
-  filterNode.connect(gainNode);
-  gainNode.connect(offlineContext.destination);
-
-  // White noise-like sweep using sawtooth
-  oscillator.type = "sawtooth";
-  oscillator.frequency.setValueAtTime(100, 0);
-  oscillator.frequency.exponentialRampToValueAtTime(800, duration * 0.3);
-  oscillator.frequency.exponentialRampToValueAtTime(200, duration);
-
-  filterNode.type = "lowpass";
-  filterNode.frequency.setValueAtTime(200, 0);
-  filterNode.frequency.exponentialRampToValueAtTime(2000, duration * 0.3);
-  filterNode.frequency.exponentialRampToValueAtTime(400, duration);
-
-  gainNode.gain.setValueAtTime(0.01, 0);
-  gainNode.gain.linearRampToValueAtTime(0.3, duration * 0.2);
-  gainNode.gain.exponentialRampToValueAtTime(0.01, duration);
-
-  oscillator.start(0);
-  oscillator.stop(duration);
-
-  const buffer = await offlineContext.startRendering();
-  return audioBufferToDataUrl(buffer);
-};
-
-// Generate ambient background tone
-const generateAmbientTone = async (durationSeconds: number): Promise<string> => {
-  const offlineContext = new OfflineAudioContext({
-    numberOfChannels: 2,
-    length: SAMPLE_RATE * durationSeconds,
-    sampleRate: SAMPLE_RATE,
-  });
-
-  // Create multiple oscillators for a rich pad sound
-  const frequencies = [130.81, 164.81, 196.00]; // C3, E3, G3 (C major chord)
-
-  frequencies.forEach((freq) => {
-    const osc = offlineContext.createOscillator();
-    const gain = offlineContext.createGain();
-
-    osc.connect(gain);
-    gain.connect(offlineContext.destination);
-
-    osc.type = "sine";
-    osc.frequency.value = freq;
-
-    // Gentle volume with slow fade in/out
-    gain.gain.setValueAtTime(0, 0);
-    gain.gain.linearRampToValueAtTime(0.06, 2);
-    gain.gain.setValueAtTime(0.06, durationSeconds - 2);
-    gain.gain.linearRampToValueAtTime(0, durationSeconds);
-
-    osc.start(0);
-    osc.stop(durationSeconds);
-  });
-
-  const buffer = await offlineContext.startRendering();
-  return audioBufferToDataUrl(buffer);
-};
 
 export const CommitShowcaseAudio: React.FC<CommitShowcaseAudioProps> = ({
   commits,
