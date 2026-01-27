@@ -7,10 +7,11 @@ interface Commit {
   hash: string;
   message: string;
   type: string;
+  repo: string;
 }
 
 export interface CommitShowcaseProps {
-  commits?: Record<string, Commit[]>;
+  commits?: Commit[];
   artistName?: string;
   userName?: string;
 }
@@ -20,7 +21,7 @@ interface ChatItem {
 }
 
 export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
-  commits = {},
+  commits = [],
   artistName = "Black Veil Brides",
   userName = "Black Sabbath",
 }) => {
@@ -49,10 +50,8 @@ export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
     config: { damping: 15 },
   });
 
-  // Flatten commits with repo info
-  const allCommits = Object.entries(commits).flatMap(([repo, repoCommits]) =>
-    repoCommits.map((commit) => ({ ...commit, repo }))
-  );
+  // Commits are now passed as a flat array with repo labels
+  const allCommits = commits;
 
   const recentChats: ChatItem[] = [
     { title: "Google Docs Integration" },
