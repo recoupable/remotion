@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Agent Skill
+
+Use `/remotion-best-practices` when working on Remotion video code. This skill provides best practices for video creation in React.
+
 ## Build Commands
 
 ```bash
@@ -45,7 +49,7 @@ Three compositions are defined in `src/Root.tsx`:
 
 ### Key Patterns
 
-- Commit data is hardcoded in `src/Root.tsx` as typed objects with `hash`, `message`, and `type` fields
+- Commit data lives in `src/data/todayCommits.ts` as typed objects with `hash`, `message`, `type`, and `repo` fields
 - Type badges use color maps defined per component (`typeColors`, `categoryColors`)
 - Brand color: `#345A5D`
 - All animations use Remotion's `spring()` and `interpolate()` utilities
