@@ -29,31 +29,38 @@ const commits: UpdatesAnnouncementProps["commits"] = {
 };
 
 // Commits from the past 24 hours (Jan 26, 2026)
+// Ordered for marketing impact: Hook → Build → Credibility → Climax
 const todayCommits: CommitShowcaseProps["commits"] = {
+  // HOOK: Lead with user-empowering features (toggle first = user control)
   "Recoup-Chat": [
+    { hash: "387aa120", message: "Add toggle to activate/deactivate pulse", type: "feat" },
+    { hash: "6bd8a7a5", message: "Add UI components for GetPulse and UpdatePulse MCP tools", type: "feat" },
     { hash: "8b4a8506", message: "Add clickable title to PulseToolResult with prefetch", type: "feat" },
     { hash: "c25615f3", message: "Remove cursor code review GitHub action", type: "chore" },
-    { hash: "6bd8a7a5", message: "Add UI components for GetPulse and UpdatePulse MCP tools", type: "feat" },
-    { hash: "387aa120", message: "Add toggle to activate/deactivate pulse", type: "feat" },
   ],
+  // BUILD: Show the powerful backend & AI tools (features first, fix last)
   "Recoup-API": [
-    { hash: "8f4be34", message: "Support Bearer token authentication for pulse", type: "fix" },
-    { hash: "0d886fb", message: "Add MCP tools for GetPulse and UpdatePulse", type: "feat" },
     { hash: "61977b7", message: "Add GET and PATCH /api/pulse endpoints", type: "feat" },
+    { hash: "0d886fb", message: "Add MCP tools for GetPulse and UpdatePulse", type: "feat" },
+    { hash: "8f4be34", message: "Support Bearer token authentication for pulse", type: "fix" },
   ],
+  // CREDIBILITY: Infrastructure shows we're building for scale
   "Recoup-Supabase": [
     { hash: "f901232", message: "Create pulse_accounts table", type: "feat" },
   ],
+  // Developer-friendly documentation
   "Recoup-Docs": [
     { hash: "b63e71c", message: "Add GET and PATCH /api/pulse endpoint documentation", type: "docs" },
   ],
-  "Recoup-Remotion": [
-    { hash: "dcfe68d", message: "Initial commit: Remotion video project setup", type: "feat" },
-  ],
+  // TRANSITION: Technical setup, then tease video capability
   "Recoup-Monorepo": [
     { hash: "282fd4a", message: "Add remotion-best-practices source files", type: "chore" },
     { hash: "aff77cb", message: "Add remotion-best-practices agent skills", type: "chore" },
     { hash: "36ea2be", message: "Add Recoup-Remotion submodule", type: "feat" },
+  ],
+  // CLIMAX: End with exciting new video creation capability!
+  "Recoup-Remotion": [
+    { hash: "dcfe68d", message: "Initial commit: Remotion video project setup", type: "feat" },
   ],
 };
 
