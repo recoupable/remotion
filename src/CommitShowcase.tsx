@@ -66,6 +66,23 @@ export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
   // Calculate timing - each commit starts 50 frames after the previous
   const COMMIT_INTERVAL = 50;
   const INTRO_DELAY = 60; // Wait for page to load
+  const COMMIT_HEIGHT = 90; // Approximate height of each commit message in pixels
+  const VISIBLE_COMMITS = 5; // Number of commits visible before scrolling starts
+
+  // Calculate scroll offset to keep latest commits in view
+  const currentCommitIndex = Math.floor((frame - INTRO_DELAY) / COMMIT_INTERVAL);
+  const scrollStartIndex = VISIBLE_COMMITS - 1; // Start scrolling after this many commits
+  const scrollOffset = currentCommitIndex > scrollStartIndex
+    ? interpolate(
+        frame,
+        [
+          INTRO_DELAY + scrollStartIndex * COMMIT_INTERVAL,
+          INTRO_DELAY + (allCommits.length - 1) * COMMIT_INTERVAL + 30
+        ],
+        [0, (allCommits.length - VISIBLE_COMMITS) * COMMIT_HEIGHT],
+        { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+      )
+    : 0;
 
   // CTA timing - appears after all commits have shown
   const lastCommitEnd = INTRO_DELAY + (allCommits.length - 1) * COMMIT_INTERVAL + 45;
@@ -312,16 +329,23 @@ export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
             overflow: "hidden",
           }}
         >
-          {allCommits.map((commit, index) => (
-            <CommitMessage
-              key={`${commit.repo}-${commit.hash}`}
-              hash={commit.hash}
-              message={commit.message}
-              repo={commit.repo}
-              type={commit.type}
-              startFrame={INTRO_DELAY + index * COMMIT_INTERVAL}
-            />
-          ))}
+          <div
+            style={{
+              transform: `translateY(-${scrollOffset}px)`,
+              transition: "transform 0.1s ease-out",
+            }}
+          >
+            {allCommits.map((commit, index) => (
+              <CommitMessage
+                key={`${commit.repo}-${commit.hash}`}
+                hash={commit.hash}
+                message={commit.message}
+                repo={commit.repo}
+                type={commit.type}
+                startFrame={INTRO_DELAY + index * COMMIT_INTERVAL}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Footer Input */}
