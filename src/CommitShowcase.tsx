@@ -1,5 +1,6 @@
 import { useCurrentFrame, useVideoConfig, spring, interpolate, Img, staticFile } from "remotion";
 import { CommitMessage } from "./components/CommitMessage";
+import { CommitShowcaseAudio } from "./components/CommitShowcaseAudio";
 
 const BRAND_COLOR = "#345A5D";
 
@@ -7,10 +8,11 @@ interface Commit {
   hash: string;
   message: string;
   type: string;
+  repo: string;
 }
 
 export interface CommitShowcaseProps {
-  commits?: Record<string, Commit[]>;
+  commits?: Commit[];
   artistName?: string;
   userName?: string;
 }
@@ -20,7 +22,7 @@ interface ChatItem {
 }
 
 export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
-  commits = {},
+  commits = [],
   artistName = "Black Veil Brides",
   userName = "Black Sabbath",
 }) => {
@@ -28,12 +30,6 @@ export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
   const { fps, durationInFrames } = useVideoConfig();
 
   const fadeIn = interpolate(frame, [0, 15], [0, 1], {
-    extrapolateRight: "clamp",
-  });
-
-  // Y-axis rotation from 20 to -20 degrees over total duration
-  const rotateY = interpolate(frame, [0, durationInFrames], [20, -20], {
-    extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
@@ -49,10 +45,8 @@ export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
     config: { damping: 15 },
   });
 
-  // Flatten commits with repo info
-  const allCommits = Object.entries(commits).flatMap(([repo, repoCommits]) =>
-    repoCommits.map((commit) => ({ ...commit, repo }))
-  );
+  // Commits are now passed as a flat array with repo labels
+  const allCommits = commits;
 
   const recentChats: ChatItem[] = [
     { title: "Google Docs Integration" },
@@ -66,10 +60,38 @@ export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
   // Calculate timing - each commit starts 50 frames after the previous
   const COMMIT_INTERVAL = 50;
   const INTRO_DELAY = 60; // Wait for page to load
+  const COMMIT_HEIGHT = 90; // Approximate height of each commit message in pixels
+  const VISIBLE_COMMITS = 5; // Number of commits visible before scrolling starts
+
+  // Calculate scroll offset to keep latest commits in view
+  const currentCommitIndex = Math.floor((frame - INTRO_DELAY) / COMMIT_INTERVAL);
+  const scrollStartIndex = VISIBLE_COMMITS - 1; // Start scrolling after this many commits
+  const scrollOffset = currentCommitIndex > scrollStartIndex
+    ? interpolate(
+        frame,
+        [
+          INTRO_DELAY + scrollStartIndex * COMMIT_INTERVAL,
+          INTRO_DELAY + (allCommits.length - 1) * COMMIT_INTERVAL + 30
+        ],
+        [0, (allCommits.length - VISIBLE_COMMITS) * COMMIT_HEIGHT],
+        { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+      )
+    : 0;
 
   // CTA timing - appears after all commits have shown
   const lastCommitEnd = INTRO_DELAY + (allCommits.length - 1) * COMMIT_INTERVAL + 45;
   const ctaStartFrame = lastCommitEnd + 30;
+
+  // Y-axis rotation: pan 11 to -11 during commits, then snap to 0 for CTA
+  const rotateY = frame < ctaStartFrame
+    ? interpolate(frame, [0, ctaStartFrame], [11, -11], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      })
+    : interpolate(frame, [ctaStartFrame, ctaStartFrame + 15], [-11, 0], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      });
 
   const ctaOpacity = interpolate(frame, [ctaStartFrame, ctaStartFrame + 20], [0, 1], {
     extrapolateLeft: "clamp",
@@ -312,16 +334,23 @@ export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
             overflow: "hidden",
           }}
         >
-          {allCommits.map((commit, index) => (
-            <CommitMessage
-              key={`${commit.repo}-${commit.hash}`}
-              hash={commit.hash}
-              message={commit.message}
-              repo={commit.repo}
-              type={commit.type}
-              startFrame={INTRO_DELAY + index * COMMIT_INTERVAL}
-            />
-          ))}
+          <div
+            style={{
+              transform: `translateY(-${scrollOffset}px)`,
+              transition: "transform 0.1s ease-out",
+            }}
+          >
+            {allCommits.map((commit, index) => (
+              <CommitMessage
+                key={`${commit.repo}-${commit.hash}`}
+                hash={commit.hash}
+                message={commit.message}
+                repo={commit.repo}
+                type={commit.type}
+                startFrame={INTRO_DELAY + index * COMMIT_INTERVAL}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Footer Input */}
@@ -461,6 +490,14 @@ export const CommitShowcase: React.FC<CommitShowcaseProps> = ({
           </div>
         </div>
       )}
+
+      {/* Audio */}
+      <CommitShowcaseAudio
+        commits={allCommits}
+        ctaStartFrame={ctaStartFrame}
+        introDelay={INTRO_DELAY}
+        commitInterval={COMMIT_INTERVAL}
+      />
       </div>
     </div>
   );

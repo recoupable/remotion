@@ -2,6 +2,7 @@ import { Composition } from "remotion";
 import { UpdatesAnnouncement, UpdatesAnnouncementProps } from "./UpdatesAnnouncement";
 import { RecoupHomePage } from "./components/RecoupHomePage";
 import { CommitShowcase, CommitShowcaseProps } from "./CommitShowcase";
+import { todayCommits } from "./data/todayCommits";
 
 const FPS = 30;
 const INTRO_DURATION = 2 * FPS;
@@ -28,22 +29,7 @@ const commits: UpdatesAnnouncementProps["commits"] = {
   ],
 };
 
-// Commits from the past 24 hours (Jan 23, 2026)
-const todayCommits: CommitShowcaseProps["commits"] = {
-  "Recoup-Chat": [
-    { hash: "68849b21", message: "Add query param api override for transport URL", type: "feat" },
-    { hash: "11c2beb9", message: "Pulse Article onClick Design", type: "feat" },
-    { hash: "3fb4f95a", message: "Require login to view Pulse content", type: "feat" },
-    { hash: "6337f8f3", message: "Pulse landing page design", type: "feat" },
-    { hash: "de24ba85", message: "Add /pulse page route", type: "feat" },
-  ],
-  "Recoup-API": [
-    { hash: "7b3af1d", message: "Add POST /api/sandbox endpoint", type: "feat" },
-    { hash: "3d56415", message: "Add Google Drive and Google Docs to enabled toolkits", type: "feat" },
-  ],
-};
-
-const todayTotalCommits = Object.values(todayCommits).flat().length;
+const todayTotalCommits = todayCommits.length;
 const COMMIT_SHOWCASE_INTERVAL = 50;
 const COMMIT_SHOWCASE_INTRO = 60;
 const COMMIT_SHOWCASE_OUTRO = 90;

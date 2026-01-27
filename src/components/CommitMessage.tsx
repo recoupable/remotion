@@ -22,6 +22,10 @@ const typeColors: Record<string, string> = {
 const repoColors: Record<string, string> = {
   "Recoup-Chat": "#2563EB",
   "Recoup-API": "#7C3AED",
+  "Recoup-Supabase": "#3ECF8E",
+  "Recoup-Docs": "#0D9373",
+  "Recoup-Remotion": "#E11D48",
+  "Recoup-Monorepo": "#345A5D",
 };
 
 export const CommitMessage: React.FC<CommitMessageProps> = ({
@@ -63,8 +67,8 @@ export const CommitMessage: React.FC<CommitMessageProps> = ({
     <div
       style={{
         display: "flex",
-        gap: 12,
-        padding: "12px 0",
+        gap: 16,
+        padding: "16px 0",
         opacity,
         transform: `translateY(${interpolate(slideIn, [0, 1], [20, 0])}px)`,
       }}
@@ -72,8 +76,8 @@ export const CommitMessage: React.FC<CommitMessageProps> = ({
       {/* Avatar */}
       <div
         style={{
-          width: 36,
-          height: 36,
+          width: 48,
+          height: 48,
           borderRadius: "50%",
           backgroundColor: repoColors[repo] || BRAND_COLOR,
           display: "flex",
@@ -82,8 +86,8 @@ export const CommitMessage: React.FC<CommitMessageProps> = ({
           flexShrink: 0,
         }}
       >
-        <span style={{ color: "white", fontSize: 14, fontWeight: 600 }}>
-          {repo === "Recoup-Chat" ? "C" : "A"}
+        <span style={{ color: "white", fontSize: 20, fontWeight: 600 }}>
+          {repo.replace("Recoup-", "").charAt(0)}
         </span>
       </div>
 
@@ -94,27 +98,27 @@ export const CommitMessage: React.FC<CommitMessageProps> = ({
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 8,
-            marginBottom: 4,
+            gap: 10,
+            marginBottom: 6,
           }}
         >
-          <span style={{ fontWeight: 600, fontSize: 14, color: "#1A1A1A" }}>
+          <span style={{ fontWeight: 600, fontSize: 18, color: "#1A1A1A" }}>
             {repo}
           </span>
           <span
             style={{
-              fontSize: 11,
+              fontSize: 14,
               fontWeight: 500,
               color: "white",
               backgroundColor: typeColors[type] || "#6B7280",
-              padding: "2px 8px",
+              padding: "3px 10px",
               borderRadius: 12,
               textTransform: "uppercase",
             }}
           >
             {type}
           </span>
-          <span style={{ fontSize: 12, color: "#9A9A9A", fontFamily: "monospace" }}>
+          <span style={{ fontSize: 14, color: "#9A9A9A", fontFamily: "monospace" }}>
             {hash.slice(0, 7)}
           </span>
         </div>
@@ -122,7 +126,7 @@ export const CommitMessage: React.FC<CommitMessageProps> = ({
         {/* Message */}
         <div
           style={{
-            fontSize: 14,
+            fontSize: 18,
             color: "#4A4A4A",
             lineHeight: 1.5,
           }}
@@ -133,7 +137,7 @@ export const CommitMessage: React.FC<CommitMessageProps> = ({
               style={{
                 display: "inline-block",
                 width: 2,
-                height: 16,
+                height: 22,
                 backgroundColor: BRAND_COLOR,
                 marginLeft: 1,
                 animation: "blink 0.5s infinite",
