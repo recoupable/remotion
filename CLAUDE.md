@@ -6,6 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Use `/remotion-best-practices` when working on Remotion video code. This skill provides best practices for video creation in React.
 
+## Code Principles
+
+Follow the shared code principles from the monorepo:
+- **SRP**: One exported function per file
+- **DRY**: Extract shared logic into utilities
+- **KISS**: Simple solutions over clever ones
+- **YAGNI**: Don't build for hypothetical future needs
+
 ## Build Commands
 
 ```bash
