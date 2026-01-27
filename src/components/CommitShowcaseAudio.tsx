@@ -7,6 +7,7 @@ interface CommitShowcaseAudioProps {
   ctaStartFrame: number;
   introDelay: number;
   commitInterval: number;
+  enableBackgroundMusic?: boolean;
 }
 
 export const CommitShowcaseAudio: React.FC<CommitShowcaseAudioProps> = ({
@@ -14,21 +15,24 @@ export const CommitShowcaseAudio: React.FC<CommitShowcaseAudioProps> = ({
   ctaStartFrame,
   introDelay,
   commitInterval,
+  enableBackgroundMusic = false,
 }) => {
   return (
     <>
-      {/* Background Music */}
-      <Audio
-        src={staticFile("audio/background-music.mp3")}
-        volume={(f) =>
-          f < ctaStartFrame - introDelay
-            ? 0.3
-            : interpolate(f, [ctaStartFrame - introDelay, ctaStartFrame - introDelay + 30], [0.3, 0.1], {
-                extrapolateRight: "clamp",
-              })
-        }
-        loop
-      />
+      {/* Background Music (optional - add public/audio/background-music.mp3) */}
+      {enableBackgroundMusic && (
+        <Audio
+          src={staticFile("audio/background-music.mp3")}
+          volume={(f) =>
+            f < ctaStartFrame - introDelay
+              ? 0.3
+              : interpolate(f, [ctaStartFrame - introDelay, ctaStartFrame - introDelay + 30], [0.3, 0.1], {
+                  extrapolateRight: "clamp",
+                })
+          }
+          loop
+        />
+      )}
 
       {/* Commit Pop Sound Effects */}
       {commits.map((commit, index) => (
