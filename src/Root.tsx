@@ -2,6 +2,8 @@ import { Composition } from "remotion";
 import { UpdatesAnnouncement, UpdatesAnnouncementProps } from "./UpdatesAnnouncement";
 import { RecoupHomePage } from "./components/RecoupHomePage";
 import { CommitShowcase, CommitShowcaseProps } from "./CommitShowcase";
+import { SocialPost, SocialPostProps } from "./components/SocialPost";
+import { CroppedVideo, CroppedVideoProps } from "./components/CroppedVideo";
 import { todayCommits } from "./data/todayCommits";
 
 const FPS = 30;
@@ -101,6 +103,32 @@ export const RemotionRoot = () => {
           artistName: "Black Veil Brides",
           userName: "Black Sabbath",
         } satisfies CommitShowcaseProps}
+      />
+      <Composition
+        id="SocialPost"
+        component={SocialPost}
+        durationInFrames={8 * FPS}
+        fps={FPS}
+        width={720}
+        height={1280}
+        defaultProps={{
+          videoUrl: "https://example.com/placeholder.mp4",
+          audioSrc: "",
+          captionText: "",
+          hasAudio: false,
+          audioStartSeconds: 0,
+        } satisfies SocialPostProps}
+      />
+      <Composition
+        id="CropPreview"
+        component={CroppedVideo}
+        durationInFrames={8 * FPS}
+        fps={FPS}
+        width={720}
+        height={1280}
+        defaultProps={{
+          videoUrl: "https://example.com/placeholder.mp4",
+        } satisfies CroppedVideoProps}
       />
     </>
   );
