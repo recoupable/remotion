@@ -10,9 +10,9 @@ export const generateAmbientTone = async (durationSeconds: number): Promise<stri
   });
 
   // Create multiple oscillators for a rich pad sound
-  const frequencies = [130.81, 164.81, 196.00]; // C3, E3, G3 (C major chord)
+  const frequencies = [130.81, 164.81, 196.0]; // C3, E3, G3 (C major chord)
 
-  frequencies.forEach((freq) => {
+  frequencies.forEach(freq => {
     const osc = offlineContext.createOscillator();
     const gain = offlineContext.createGain();
 
