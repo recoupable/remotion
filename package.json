@@ -7,10 +7,12 @@
     "build": "remotion render UpdatesAnnouncement out/update-video.mp4",
     "build:gif": "remotion render UpdatesAnnouncement out/update-video.gif",
     "build:homepage": "remotion render RecoupHomePage out/recoup-homepage.mp4",
-    "build:showcase": "remotion render CommitShowcase out/commit-showcase.mp4"
+    "build:showcase": "remotion render CommitShowcase out/commit-showcase.mp4",
+    "build:content-api": "remotion render ContentApiArtistLaunch out/content-api-artist-launch.mp4"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.0",
+    "@remotion/fonts": "^4.0.454",
     "@remotion/media": "4.0.410",
     "@remotion/media-utils": "4.0.410",
     "@remotion/transitions": "^4.0.0",

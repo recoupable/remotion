@@ -3,6 +3,14 @@ import { UpdatesAnnouncement, UpdatesAnnouncementProps } from "./UpdatesAnnounce
 import { RecoupHomePage } from "./components/RecoupHomePage";
 import { CommitShowcase, CommitShowcaseProps } from "./CommitShowcase";
 import { todayCommits } from "./data/todayCommits";
+import { InfrastructureLayer, TOTAL_FRAMES as INFRA_FRAMES } from "./InfrastructureLayer";
+import {
+  ContentApiArtistLaunch,
+  CONTENT_API_LAUNCH_FPS,
+  CONTENT_API_LAUNCH_TOTAL_FRAMES,
+  ContentApiArtistLaunchProps,
+} from "./ContentApiArtistLaunch";
+import { contentApiLaunchData } from "./data/contentApiLaunchData";
 
 const FPS = 30;
 const INTRO_DURATION = 2 * FPS;
@@ -29,7 +37,8 @@ const commits: UpdatesAnnouncementProps["commits"] = {
   ],
 };
 
-const todayTotalCommits = todayCommits.length;
+const showcaseCommits = todayCommits ?? [];
+const todayTotalCommits = showcaseCommits.length;
 const COMMIT_SHOWCASE_INTERVAL = 50;
 const COMMIT_SHOWCASE_INTRO = 60;
 const COMMIT_SHOWCASE_OUTRO = 90;
@@ -97,10 +106,29 @@ export const RemotionRoot = () => {
         width={1280}
         height={1000}
         defaultProps={{
-          commits: todayCommits,
+          commits: showcaseCommits,
           artistName: "Black Veil Brides",
           userName: "Black Sabbath",
         } satisfies CommitShowcaseProps}
+      />
+      <Composition
+        id="InfrastructureLayer"
+        component={InfrastructureLayer}
+        durationInFrames={INFRA_FRAMES}
+        fps={FPS}
+        width={1080}
+        height={1080}
+      />
+      <Composition
+        id="ContentApiArtistLaunch"
+        component={ContentApiArtistLaunch}
+        durationInFrames={CONTENT_API_LAUNCH_TOTAL_FRAMES}
+        fps={CONTENT_API_LAUNCH_FPS}
+        width={1080}
+        height={1080}
+        defaultProps={{
+          data: contentApiLaunchData,
+        } satisfies ContentApiArtistLaunchProps}
       />
     </>
   );
